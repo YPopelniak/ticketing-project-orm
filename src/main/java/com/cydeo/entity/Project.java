@@ -17,6 +17,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class Project extends BaseEntity{
 
+    @Column(unique = true)
     private String projectCode;
     private String projectName;
 
