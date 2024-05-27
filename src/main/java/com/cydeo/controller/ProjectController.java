@@ -82,7 +82,7 @@ public class ProjectController {
         if (bindingResult.hasErrors()) {
 
             model.addAttribute("projects", projectService.listAllProjects());
-            model.addAttribute("managers", userService.listAllByRole("manager"));
+            model.addAttribute("managers", userService.listAllByRole("employee"));
 
             return "/project/update";
 
