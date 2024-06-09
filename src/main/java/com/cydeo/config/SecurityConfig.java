@@ -1,5 +1,6 @@
 package com.cydeo.config;
 
+import com.cydeo.service.SecurityService;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.context.annotation.Bean;
@@ -19,20 +20,28 @@ import java.util.List;
 @Configuration
 public class SecurityConfig {
 
-    @Bean
-    public UserDetailsService userDetailsService(PasswordEncoder encoder){
+    private final SecurityService securityService;
+    private final AuthSuccessHandler authSuccessHandler;
 
-        List<UserDetails> userList =  new ArrayList<>();
-
-        userList.add(
-                new User("mike", encoder.encode("password"), Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"))));
-        userList.add(
-                new User("ozzy", encoder.encode("password"), Arrays.asList(new SimpleGrantedAuthority("ROLE_MANAGER"))));
-
-
-        return new InMemoryUserDetailsManager(userList);
-
+    public SecurityConfig(SecurityService securityService, AuthSuccessHandler authSuccessHandler) {
+        this.securityService = securityService;
+        this.authSuccessHandler = authSuccessHandler;
     }
+
+//    @Bean
+//    public UserDetailsService userDetailsService(PasswordEncoder encoder){
+//
+//
+//        List<UserDetails> userList =  new ArrayList<>();
+//
+//        userList.add(
+//                new User("mike", encoder.encode("password"), Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"))));
+//        userList.add(
+//                new User("ozzy", encoder.encode("password"), Arrays.asList(new SimpleGrantedAuthority("ROLE_MANAGER"))));
+//
+//
+//        return new InMemoryUserDetailsManager(userList);
+//    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -76,5 +85,8 @@ public class SecurityConfig {
 
     }
 
-
 }
+
+
+
+
