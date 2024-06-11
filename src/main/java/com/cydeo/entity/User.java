@@ -18,17 +18,20 @@ public class User extends BaseEntity {
 
     private String firstName;
     private String lastName;
-    @Column(unique = true,nullable = false )
+
+    @Column(unique = true, nullable = false)
     private String userName;
+
     private String passWord;
     private boolean enabled;
     private String phone;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
+
 
 }

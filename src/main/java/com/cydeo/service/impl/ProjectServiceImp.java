@@ -12,7 +12,9 @@ import com.cydeo.repository.TaskRepository;
 import com.cydeo.service.ProjectService;
 import com.cydeo.service.TaskService;
 import com.cydeo.service.UserService;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.PreUpdate;
@@ -29,7 +31,7 @@ public class ProjectServiceImp implements ProjectService {
     private final TaskRepository taskRepository;
     private final TaskService taskService;
 
-    public ProjectServiceImp(ProjectRepository projectRepository, ProjectMapper projectMapper, UserService userService, UserMapper userMapper, TaskRepository taskRepository, TaskService taskService) {
+    public ProjectServiceImp(ProjectRepository projectRepository, ProjectMapper projectMapper, @Lazy UserService userService, UserMapper userMapper, TaskRepository taskRepository, TaskService taskService) {
         this.projectRepository = projectRepository;
         this.projectMapper = projectMapper;
         this.userService = userService;
@@ -94,8 +96,10 @@ public class ProjectServiceImp implements ProjectService {
 
     @Override
     public List<ProjectDTO> listAllProjectDetails() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        UserDTO currentUserDTO = userService.findByUserName("harold@manager.com");
+
+        UserDTO currentUserDTO = userService.findByUserName(username);
         User user = userMapper.convertToEntity(currentUserDTO);
 
         List<Project> list = projectRepository.findAllByAssignedManager(user);
